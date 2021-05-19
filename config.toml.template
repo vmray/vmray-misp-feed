@@ -1,0 +1,15 @@
+feed_path = "/var/www/MISP/app/tmp/vmray-misp-feed"
+logging = "INFO"
+
+[vmray]
+host = "https://cloud.vmray.com"
+api_key = "your_api_key"
+verify_cert = true
+last_submission_id = 0  # submission_id to start with
+chunk_size = 100
+
+[misp_event]
+include_report = false
+use_vmray_tags = true
+include_vtis = false
+ioc_only = true

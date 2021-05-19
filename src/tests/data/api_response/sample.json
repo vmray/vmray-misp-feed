@@ -1,0 +1,47 @@
+{
+  "data": {
+    "sample_child_relations": [],
+    "sample_child_relations_truncated": false,
+    "sample_child_sample_ids": [],
+    "sample_classifications": [
+      "EICAR"
+    ],
+    "sample_container_type": null,
+    "sample_created": "2021-02-10T16:25:25",
+    "sample_display_url": null,
+    "sample_filename": "SmokeTester.exe",
+    "sample_filesize": 14848,
+    "sample_highest_vti_score": 100,
+    "sample_highest_vti_severity": "malicious",
+    "sample_id": 12,
+    "sample_imphash": "8a23ac2507a0e192f8f677b46bdc561b",
+    "sample_is_multipart": false,
+    "sample_last_md_score": null,
+    "sample_last_reputation_severity": "unknown",
+    "sample_last_vt_score": null,
+    "sample_md5hash": "607234cb98cd6127dbc761c04c53fd65",
+    "sample_parent_relations": [],
+    "sample_parent_relations_truncated": false,
+    "sample_parent_sample_ids": [],
+    "sample_password_protected": false,
+    "sample_pe_signature": {},
+    "sample_priority": 1,
+    "sample_score": 100,
+    "sample_severity": "malicious",
+    "sample_sha1hash": "6c26eab9b233bd1921f1607879a9d3f4aa92ff23",
+    "sample_sha256hash": "46d2a7a499be0dbc6f46617afd57b9c2b785d597b7fd2c8b5902e5c165226e29",
+    "sample_ssdeephash": "384:w60MaC/dEUM+q/PVHNb4wK05oPEqnwPh:wvC/d3QPVHfko",
+    "sample_threat_names": [
+      "EICAR",
+      "EICAR-Test-File (not a virus)"
+    ],
+    "sample_type": "Windows Exe (x86-32)",
+    "sample_url": null,
+    "sample_verdict": "malicious",
+    "sample_verdict_reason_code": null,
+    "sample_verdict_reason_description": null,
+    "sample_vti_score": 100,
+    "sample_webif_url": "https://jthom-dev-hw.mw.local.vmray.com/user/sample/view?id=12"
+  },
+  "result": "ok"
+}

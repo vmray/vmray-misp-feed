@@ -1,0 +1,2709 @@
+{
+  "Event": {
+    "info": "VMRay Platform report for submission 12",
+    "published": true,
+    "analysis": "2",
+    "extends_uuid": "",
+    "threat_level_id": "4",
+    "Orgc": {
+      "uuid": "df351423-4bd8-497a-9ca1-0a749d5373ba",
+      "name": "VMRay"
+    },
+    "Tag": [
+      {
+        "colour": "#ffffff",
+        "name": "misp-galaxy:mitre-attack-pattern=\"System Network Configuration Discovery - T1016\""
+      },
+      {
+        "colour": "#ffffff",
+        "name": "misp-galaxy:mitre-attack-pattern=\"Modify Registry - T1112\""
+      },
+      {
+        "colour": "#ffffff",
+        "name": "vmray:verdict=\"malicious\""
+      }
+    ],
+    "Object": [
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "4d3fffd2-cd07-4357-96e0-a51c988faaef",
+        "name": "sandbox-report",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Sandbox report",
+        "template_version": "2",
+        "Attribute": [
+          {
+            "object_relation": "on-premise-sandbox",
+            "to_ids": false,
+            "category": "Other",
+            "value": "vmray",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "permalink",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "https://jthom-dev-hw.mw.local.vmray.com/user/analysis/view?id=82&sub=%2Freport%2Foverview.html",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "link"
+          },
+          {
+            "object_relation": "score",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "malicious",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sandbox-type",
+            "to_ids": false,
+            "category": "Other",
+            "value": "win7_64_sp1 | Windows Exe (x86-32)",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "results",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Classifications: EICAR",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "984c5c39-be7f-4e1e-b034-d3213bac51cb",
+        "name": "sb-signature",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Sandbox detection signature",
+        "template_version": "2",
+        "Attribute": [
+          {
+            "object_relation": "software",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "VMRay Platform",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex: Creates mutex. (Process #1) smoketester.exe creates mutex with name \"Mutex_N\u00f6_0 (<b>Test</b>)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex: Creates mutex. (Process #1) smoketester.exe creates mutex with name \"Mutex_N\u00f6_1 (<b>Test</b>)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Antivirus: Malicious content was detected by heuristic scan. Built-in AV detected the downloaded file http_eicar.com as \"EICAR-Test-File (not a virus)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Antivirus: Malicious content was detected by heuristic scan. Built-in AV detected the dropped file Saying Hello as \"EICAR-Test-File (not a virus)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Discovery: Checks external IP address. (Process #1) smoketester.exe checks external IP by asking IP info service at \"https://api.ipify.org?test=<b>\u00f6</b>\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Reputation: Known malicious file. Reputation analysis labels file \"http_eicar.com\" as \"EICAR-Test-File (not a virus)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Network Connection: Performs DNS request. (Process #1) smoketester.exe resolves host name \"www.disney.com\" to IP \"88.221.110.120\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Network Connection: Connects to remote host. (Process #1) smoketester.exe opens an outgoing TCP connection to host \"141.8.192.102:80\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "YARA: Suspicious content matched by YARA rules. Rule \"EICAR_String\" from ruleset \"Payloads\" has matched on response data of URL \"http://www.eicar.org/download/eicar.com.txt\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"2/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "YARA: Suspicious content matched by YARA rules. Rule \"EICAR_String\" from ruleset \"Payloads\" has matched on the downloaded file \"http_eicar.com\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"2/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex: Creates mutex. (Process #1) smoketester.exe creates mutex with name \"Mutex_N\u00f6_2 (<b>Test</b>)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "YARA: Malicious content matched by YARA rules. Rule \"EICAR\" from ruleset \"Payloads\" has matched on the downloaded file \"http_eicar.com\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"5/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex: Creates mutex. (Process #1) smoketester.exe creates mutex with name \"Mutex_N\u00f6_3 (<b>Test</b>)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex: Creates mutex. (Process #1) smoketester.exe creates mutex with name \"Mutex_N\u00f6_4 (<b>Test</b>)\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"1/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "System Modification: Disables a crucial system tool. (Process #1) smoketester.exe disables the Command Prompt (CMD) and scripts via registry.",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "System Modification: Disables a crucial system tool. (Process #1) smoketester.exe disables the Command Prompt (CMD) via registry.",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Antivirus: Malicious content was detected by heuristic scan. Built-in AV detected \"EICAR-Test-File (not a virus)\" in the PCAP of the analysis.",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          },
+          {
+            "object_relation": "signature",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Antivirus: Malicious content was detected by heuristic scan. Built-in AV detected \"EICAR-Test-File (not a virus)\" in the response data of URL \"http://www.eicar.org/download/eicar.com.txt\".",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:vti_analysis_score=\"4/5\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "api.ipify.org",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "50.19.252.36",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "www.etes.de",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "91.196.144.2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "www.eicar.org",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "89.238.73.97",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "www.disney.com",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "88.221.110.120",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "2.16.100.162",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "video.disney.com.edgesuite.net",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "88.221.110.120",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "2.16.100.162",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "a1996.dscf1.akamai.net",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "88.221.110.120",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "2.16.100.162",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "43b3b146-77eb-4931-b4cc-b66c60f28734",
+        "name": "domain-ip",
+        "comment": "",
+        "meta-category": "network",
+        "description": "A domain/hostname and IP address seen as a tuple in a specific time frame.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "domain",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "www.test.com",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "141.8.192.102",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "a0c666e0-fc65-4be8-b48f-3423d788b552",
+        "name": "email",
+        "comment": "",
+        "meta-category": "network",
+        "description": "Email object describing an email with meta-information",
+        "template_version": "15",
+        "Attribute": [
+          {
+            "object_relation": "from",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "Alice <alice@machine.example>",
+            "disable_correlation": false,
+            "comment": "Classifications: Virus",
+            "type": "email-src",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "subject",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "Saying Hello",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "email-subject"
+          },
+          {
+            "object_relation": "to",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "bob@example.net",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "email-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "68",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "44d88612fea8a8f36de82e1278abb02f",
+            "disable_correlation": false,
+            "comment": "Classifications: EICAR, Virus",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "3395856ce81f2b7382dee72602f798b642f14140",
+            "disable_correlation": false,
+            "comment": "Classifications: EICAR, Virus",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f",
+            "disable_correlation": false,
+            "comment": "Classifications: EICAR, Virus",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "3:a+JraNvsgzsVqSwHq9:tJuOgzsko",
+            "disable_correlation": false,
+            "comment": "Classifications: EICAR, Virus",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "eicar.com[1].txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\appdata\\local\\microsoft\\windows\\temporary internet files\\content.ie5\\pmmr5k9k\\eicar.com[1].txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "http_eicar.com",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\http_eicar.com",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "av-test.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "av-test.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "14848",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "607234cb98cd6127dbc761c04c53fd65",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "6c26eab9b233bd1921f1607879a9d3f4aa92ff23",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "46d2a7a499be0dbc6f46617afd57b9c2b785d597b7fd2c8b5902e5c165226e29",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "384:w60MaC/dEUM+q/PVHNb4wK05oPEqnwPh:wvC/d3QPVHfko",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "application/vnd.microsoft.portable-executable",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "smoketester.exe",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\smoketester.exe",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "48",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "11036b7dd7d88e80485f74f34ff83009",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "a93bc0726e1f38657f816314c4764f3af283f9a1",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "6a9b30d7e3ca87b43ce0e0078325a1f03f06c344ac25911333567a6f2dd67d57",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3:A/hF3W6DAgwqTgV2:GhZWMKA",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_closed_handle_n\u00f6_0.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_closed_handle_n\u00f6_0.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_closed_handle_n\u00f6_1.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_closed_handle_n\u00f6_1.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_closed_handle_n\u00f6_2.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_closed_handle_n\u00f6_2.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_closed_handle_n\u00f6_3.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_closed_handle_n\u00f6_3.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "48",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "8ed4a3d627a1b4d6a5d827859ab5aa43",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "5f10785251e57fb4498debdfaae18c40d2e3432f",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "9da632d4ff90bd5d59891b7ee004d20f04d65fb4c5910a75724bbb9e8c2c2cef",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3:A/hF3W6DAgwqTgV1:GhZWMKD",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_unclosed_handle_n\u00f6_0.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_unclosed_handle_n\u00f6_0.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "file_unclosed_handle_n\u00f6_1.txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, write, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\file_unclosed_handle_n\u00f6_1.txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "12",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "5f61ad2e35e8d07aacb241664824725e",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "610a4f50b05d5f664c5cc47b6b3b86ca6cb4ced1",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "fd41cd2f48623ceb8d6d4fa774c80efa5c3f22c94bfd7a7c59543772b585d9a1",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3:gRtWu:g73",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "api_ipify_org[1].txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\appdata\\local\\microsoft\\windows\\temporary internet files\\content.ie5\\x9ohk109\\api_ipify_org[1].txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "downloaded_file_n\u00f6_1",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\downloaded_file_n\u00f6_1",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "92",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3a80589f9192a720c3d417f67eee8eb6",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "03879596d358f77c2d328c720a1e823577b23fba",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "28855b23a1b644899fa6034c86ec767c8c8e6d755d566802a8f869192fc9349d",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3:jABFrCRMEJJKswvf0FGESjKswvf0FyWmReHKswvn:ACrHK7KAKz",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "robots[1].txt",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\appdata\\local\\microsoft\\windows\\temporary internet files\\content.ie5\\mm5o9xqs\\robots[1].txt",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "filename",
+            "to_ids": true,
+            "category": "Payload delivery",
+            "value": "downloaded_file_n\u00f6_2",
+            "disable_correlation": true,
+            "comment": "Operations: access, create",
+            "type": "filename"
+          },
+          {
+            "object_relation": "fullpath",
+            "to_ids": false,
+            "category": "Other",
+            "value": "%USERPROFILE%\\desktop\\downloaded_file_n\u00f6_2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "688c46fb-5edb-40a3-8273-1af7923e2215",
+        "name": "file",
+        "comment": "",
+        "meta-category": "file",
+        "description": "File object describing a file with meta-information",
+        "template_version": "24",
+        "Attribute": [
+          {
+            "object_relation": "size-in-bytes",
+            "to_ids": false,
+            "category": "Other",
+            "value": "50",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "size-in-bytes"
+          },
+          {
+            "object_relation": "md5",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3de912b57638b067308299ee00da5ba2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "md5",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha1",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "ce40ca0b3d7bfe518e2a609c744b7c2b091c1526",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha1",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "sha256",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "54fe742b44c03ab9eafb993fb6fdf230a058ce71d16f23bca7b47c51b40ca386",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "sha256",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ssdeep",
+            "to_ids": false,
+            "category": "Payload delivery",
+            "value": "3:hMCEThKXRKFAwH9FfQwy:huQRQHDry",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ssdeep",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "mimetype",
+            "to_ids": false,
+            "category": "Artifacts dropped",
+            "value": "text/plain",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "mime-type"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "192.168.0.1",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "91.196.144.2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "50.19.252.36",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "185.26.122.44",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "89.238.73.97",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "141.8.192.102",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "23.21.140.41",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "54.221.253.252",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "54.225.66.103",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "54.235.83.248",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "54.225.129.141",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "23.21.48.44",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "54.243.164.148",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "88.221.110.120",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "2.16.100.162",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f8cea74-16fe-4968-a2b4-026676949ac6",
+        "name": "ip-port",
+        "comment": "",
+        "meta-category": "network",
+        "description": "An IP address (or domain or hostname) and a port seen as a tuple (or as a triple) in a specific time frame.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "ip",
+            "to_ids": false,
+            "category": "Network activity",
+            "value": "192.168.0.117",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f5c1a68-2021-4faa-b409-61c899c86466",
+        "name": "mutex",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object to describe mutual exclusion locks (mutex) as seen in memory or computer program",
+        "template_version": "1",
+        "Attribute": [
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex_N\u00f6_0 (<b>Test</b>)",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "description",
+            "to_ids": false,
+            "category": "Other",
+            "value": "Operations: access",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f5c1a68-2021-4faa-b409-61c899c86466",
+        "name": "mutex",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object to describe mutual exclusion locks (mutex) as seen in memory or computer program",
+        "template_version": "1",
+        "Attribute": [
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex_N\u00f6_1 (<b>Test</b>)",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "description",
+            "to_ids": false,
+            "category": "Other",
+            "value": "Operations: access",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f5c1a68-2021-4faa-b409-61c899c86466",
+        "name": "mutex",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object to describe mutual exclusion locks (mutex) as seen in memory or computer program",
+        "template_version": "1",
+        "Attribute": [
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex_N\u00f6_2 (<b>Test</b>)",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "description",
+            "to_ids": false,
+            "category": "Other",
+            "value": "Operations: access",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f5c1a68-2021-4faa-b409-61c899c86466",
+        "name": "mutex",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object to describe mutual exclusion locks (mutex) as seen in memory or computer program",
+        "template_version": "1",
+        "Attribute": [
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex_N\u00f6_3 (<b>Test</b>)",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "description",
+            "to_ids": false,
+            "category": "Other",
+            "value": "Operations: access",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "9f5c1a68-2021-4faa-b409-61c899c86466",
+        "name": "mutex",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object to describe mutual exclusion locks (mutex) as seen in memory or computer program",
+        "template_version": "1",
+        "Attribute": [
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "Mutex_N\u00f6_4 (<b>Test</b>)",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "description",
+            "to_ids": false,
+            "category": "Other",
+            "value": "Operations: access",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "02aeef94-ac23-455c-addb-731757ceafb5",
+        "name": "process",
+        "comment": "",
+        "meta-category": "misc",
+        "description": "Object describing a system process.",
+        "template_version": "8",
+        "Attribute": [
+          {
+            "object_relation": "pid",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "3776",
+            "disable_correlation": true,
+            "comment": "",
+            "type": "text"
+          },
+          {
+            "object_relation": "name",
+            "to_ids": false,
+            "category": "Other",
+            "value": "c:\\users\\5p5nrgjn0js halpmcxz\\desktop\\smoketester.exe",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "command-line",
+            "to_ids": false,
+            "category": "Other",
+            "value": "\"C:\\Users\\5p5NrGJn0jS HALPmcxz\\Desktop\\SmokeTester.exe\"",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "text",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "8b3228ad-6d82-4fe6-b2ae-05426308f1d5",
+        "name": "registry-key",
+        "comment": "",
+        "meta-category": "file",
+        "description": "Registry key object describing a Windows registry key with value and last-modified timestamp",
+        "template_version": "4",
+        "Attribute": [
+          {
+            "object_relation": "key",
+            "to_ids": false,
+            "category": "Persistence mechanism",
+            "value": "HKEY_LOCAL_MACHINE\\my\\ioctester\\",
+            "disable_correlation": false,
+            "comment": "Operations: access",
+            "type": "regkey",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "8b3228ad-6d82-4fe6-b2ae-05426308f1d5",
+        "name": "registry-key",
+        "comment": "",
+        "meta-category": "file",
+        "description": "Registry key object describing a Windows registry key with value and last-modified timestamp",
+        "template_version": "4",
+        "Attribute": [
+          {
+            "object_relation": "key",
+            "to_ids": false,
+            "category": "Persistence mechanism",
+            "value": "HKEY_LOCAL_MACHINE\\my\\ioctester\\value_name",
+            "disable_correlation": false,
+            "comment": "Operations: access, write, read",
+            "type": "regkey",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "8b3228ad-6d82-4fe6-b2ae-05426308f1d5",
+        "name": "registry-key",
+        "comment": "",
+        "meta-category": "file",
+        "description": "Registry key object describing a Windows registry key with value and last-modified timestamp",
+        "template_version": "4",
+        "Attribute": [
+          {
+            "object_relation": "key",
+            "to_ids": false,
+            "category": "Persistence mechanism",
+            "value": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\System",
+            "disable_correlation": false,
+            "comment": "Operations: access, create",
+            "type": "regkey",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "8b3228ad-6d82-4fe6-b2ae-05426308f1d5",
+        "name": "registry-key",
+        "comment": "",
+        "meta-category": "file",
+        "description": "Registry key object describing a Windows registry key with value and last-modified timestamp",
+        "template_version": "4",
+        "Attribute": [
+          {
+            "object_relation": "key",
+            "to_ids": true,
+            "category": "Persistence mechanism",
+            "value": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\System\\DisableCMD",
+            "disable_correlation": false,
+            "comment": "Operations: access, write",
+            "type": "regkey",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"malicious\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "http://185.26.122.44/robots.txt",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "185.26.122.44",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "http://www.etes.de/downloads/eicar-testvirus/?file=files/etes/downloads/anwenden/eicar.com",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "www.etes.de",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "91.196.144.2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "http://www.eicar.org/download/eicar.com.txt",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"suspicious\""
+              }
+            ]
+          },
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "www.eicar.org",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "89.238.73.97",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "http://www.test.com/robots.txt",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "www.test.com",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "141.8.192.102",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "https://api.ipify.org?test=<b>\u00f6</b>",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:artifact=\"IOC\""
+              },
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "api.ipify.org",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "50.19.252.36",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      },
+      {
+        "sharing_group_id": "0",
+        "distribution": "5",
+        "template_uuid": "60efb77b-40b5-4c46-871b-ed1ed999fce5",
+        "name": "url",
+        "comment": "",
+        "meta-category": "network",
+        "description": "url object describes an url along with its normalized field (like extracted using faup parsing library) and its metadata.",
+        "template_version": "9",
+        "Attribute": [
+          {
+            "object_relation": "url",
+            "to_ids": false,
+            "category": "External analysis",
+            "value": "https://www.etes.de/downloads/eicar-testvirus/?file=files/etes/downloads/anwenden/eicar.com",
+            "disable_correlation": false,
+            "comment": "Operations: get",
+            "type": "url",
+            "Tag": [
+              {
+                "colour": "#ffffff",
+                "name": "vmray:verdict=\"clean\""
+              }
+            ]
+          },
+          {
+            "object_relation": "domain",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "www.etes.de",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "domain"
+          },
+          {
+            "object_relation": "ip",
+            "to_ids": true,
+            "category": "Network activity",
+            "value": "91.196.144.2",
+            "disable_correlation": false,
+            "comment": "",
+            "type": "ip-dst"
+          }
+        ]
+      }
+    ]
+  }
+}
