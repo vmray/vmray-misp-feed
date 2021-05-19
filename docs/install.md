@@ -25,7 +25,7 @@ To run the **vmray-misp-feed**, you need the following installed on your system:
 
 Install the **vmray-misp-feed** using either `curl` or `wget` or another similar tool.
 
-For example, if you use `wget`, execute:
+For example, if you use `curl`, execute:
 
 ```bash
 curl https://raw.githubusercontent.com/vmray/vmray-misp-feed/main/install.sh | sh
@@ -65,7 +65,7 @@ sudo crontab -e
 ```
 and paste `0 * * * * /opt/vmray-misp-feed/.venv/bin/python /opt/vmray-misp-feed/src/feed.py` inside it.
 
-See [MISP Feeds](../misp-feeds.md), for information about how to set up the feed in MISP.
+See [MISP Feeds](./misp-feeds.md), for information about how to set up the feed in MISP.
 
 If you don't already have a cronjob for fetching MISP feeds, create one as well. Use the feed id from **vmray-misp-feed** from within MISP, or if you want to update all feeds, use `all` instead of `feed-id`:
 ```
