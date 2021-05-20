@@ -1,6 +1,6 @@
 dataclasses; python_version < "3.7"
 packaging==20.9
-pydantic==1.8
+pydantic==1.8.2
 pymisp==2.4.138
 toml==0.10.2
 vmray-rest-api==5.0.0
