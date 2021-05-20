@@ -54,7 +54,7 @@ EOF
 echo_postinstall() {
     cat << EOF
 In order to successfully import VMRay reports into MISP, you need to change some values
-in ${BLUE}`config.toml`${RESET}. At least, provide the VMRay host and API key.
+in ${BLUE}config.toml${RESET}. At least, provide the VMRay host and API key.
 
 In addition, you need to create a new feed in MISP. See ${BLUE}docs/misp-feeds.md${RESET} for more details.
 
@@ -62,7 +62,7 @@ To periodically update the feed and import it into MISP, you need to create two 
     1. for the VMRay MISP feed
     2. for MISP to poll feeds regulary
 
-    Copy/paste both lines into `sudo crontab -e`:
+    Copy/paste both lines into "sudo crontab -e":
     0 * * * * sudo -u www-data /opt/vmray-misp-feed/.venv/bin/python /opt/vmray-misp-feed/src/feed.py
     15 * * * * /var/www/MISP/app/Console/cake Server fetchFeed 1 <vmray-misp-feed-id>
 EOF
@@ -76,11 +76,12 @@ download_repo() {
         exit 1
     }
 
-    git clone -c core.eol=lf -c core.autocrlf=false "$REMOTE" "$TARGET" || {
+    sudo git clone -c core.eol=lf -c core.autocrlf=false "$REMOTE" "$TARGET" || {
         fmt_error "git clone of vmray-misp-feed failed"
         exit 1
     }
 
+    sudo chown -R $USER:$USER $TARGET
     cd $TARGET
 
     echo
@@ -126,7 +127,6 @@ main() {
     setup_venv
 
     cp ${TARGET}/config.toml.template ${TARGET}/config.toml
-    chown www-data:www-data -R ${TARGET}
 
     echo_postinstall
 }
