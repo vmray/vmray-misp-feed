@@ -50,10 +50,12 @@ class Artifact:
 
     def tag_artifact_attribute(self, attribute: MISPAttribute) -> None:
         if self.is_ioc:
-            attribute.add_tag('vmray:artifact="IOC"')
+            if attribute:
+                attribute.add_tag('vmray:artifact="IOC"')
 
         if self.verdict:
-            attribute.add_tag(f'vmray:verdict="{self.verdict}"')
+            if attribute:
+                attribute.add_tag(f'vmray:verdict="{self.verdict}"')
 
 
 @dataclass
@@ -750,7 +752,9 @@ class SummaryV2(ReportParser):
                 continue
 
             for ip_address in self._resolve_refs(ref_ip_addresses):
-                artifact.ips.append(ip_address["ip_address"])
+                #print (ip_address)
+                if "ip_address" in ip_address:
+                    artifact.ips.append(ip_address["ip_address"])
 
             yield artifact
 
@@ -858,12 +862,14 @@ class SummaryV2(ReportParser):
             domain = None
             ref_domain = url.get("ref_domain", {})
             if ref_domain:
-                domain = self._resolve_ref(ref_domain)["domain"]
+                if "domain" in ref_domain:
+                    domain = self._resolve_ref(ref_domain)["domain"]
 
             ips = []
             ref_ip_addresses = url.get("ref_ip_addresses", [])
             for ip_address in self._resolve_refs(ref_ip_addresses):
-                ips.append(ip_address["ip_address"])
+                if "ip_address" in ip_address:
+                    ips.append(ip_address["ip_address"])
 
             artifact = UrlArtifact(
                 url=url["url"],
