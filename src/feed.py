@@ -67,8 +67,25 @@ class VMRayFeed:
             for hsh in hashes:
                 fobj.write("{},{}\n".format(hsh[0], hsh[1]))
 
-    def _save_manifest(self, manifest: dict):
-        with (self.feed_path / "manifest.json").open("w", encoding="utf-8") as fobj:
+    def _save_manifest(self, new_manifest: dict):
+        """
+        Save the manifest.json file.
+        Try to read and update/extend it if the file already exists.
+        Create a new one otherwise.
+        """
+        manifest_file = self.feed_path / "manifest.json"
+        try:
+            with manifest_file.open("r", encoding="utf-8") as fobj:
+                manifest = json.load(fobj)
+                if manifest:
+                    manifest.update(new_manifest)
+                else:
+                    manifest = new_manifest
+        except (FileNotFoundError, json.JSONDecodeError) as exc:
+            self.logger.warning("Manifest file could not be read. Creating a new one.")
+            manifest = new_manifest
+
+        with manifest_file.open("w", encoding="utf-8") as fobj:
             json.dump(manifest, fobj, indent=2)
 
     def update_feed(self):
