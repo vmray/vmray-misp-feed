@@ -304,8 +304,10 @@ class ProcessArtifact(Artifact):
         cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
 
         if tag:
-            self.tag_artifact_attribute(name_attr)
-            self.tag_artifact_attribute(cmd_attr)
+            if name_attr is not None:
+                self.tag_artifact_attribute(name_attr)
+            if cmd_attr is not None:
+                self.tag_artifact_attribute(cmd_attr)
 
         return obj
 
@@ -751,6 +753,9 @@ class SummaryV2(ReportParser):
 
             for ip_address in self._resolve_refs(ref_ip_addresses):
                 artifact.ips.append(ip_address["ip_address"])
+                ip = ip_address.get("ip_address")
+                if ip is not None:
+                    artifact.ips.append(ip)
 
             yield artifact
 
@@ -857,13 +862,15 @@ class SummaryV2(ReportParser):
         for url in self._resolve_refs(url_refs):
             domain = None
             ref_domain = url.get("ref_domain", {})
-            if ref_domain:
+            if ref_domain and self._resolve_ref(ref_domain).get("domain") is not None:
                 domain = self._resolve_ref(ref_domain)["domain"]
 
             ips = []
             ref_ip_addresses = url.get("ref_ip_addresses", [])
             for ip_address in self._resolve_refs(ref_ip_addresses):
-                ips.append(ip_address["ip_address"])
+                ip = ip_address.get("ip_address")
+                if ip is not None:
+                    ips.append(ip)
 
             artifact = UrlArtifact(
                 url=url["url"],
