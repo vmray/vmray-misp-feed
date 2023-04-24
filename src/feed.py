@@ -22,7 +22,7 @@ LOG_LEVEL_MAPPING = {
 
 def setup_logging(log_level: str):
     log_level = LOG_LEVEL_MAPPING[log_level]
-    logger = logging.getLogger("VMRay Feed")
+    logger = logging.getLogger("vmray_feed")
     logger.setLevel(log_level)
 
     file_logger = logging.FileHandler("feed.log")
@@ -32,7 +32,7 @@ def setup_logging(log_level: str):
     stream_logger.setLevel(log_level)
 
     formatter = logging.Formatter(
-        "%(asctime)s %(filename)s: %(levelname)8s | %(message)s"
+        "%(asctime)s %(filename)8s: %(levelname)8s | %(message)s"
     )
     file_logger.setFormatter(formatter)
     stream_logger.setFormatter(formatter)
@@ -65,7 +65,7 @@ class VMRayFeed:
     def _save_hashes(self, hashes: List[str]):
         with (self.feed_path / "hashes.csv").open("a", encoding="utf-8") as fobj:
             for hsh in hashes:
-                fobj.write("{},{}\n".format(hsh[0], hsh[1]))
+                fobj.write(f"{hsh[0]},{hsh[1]}\n")
 
     def _save_manifest(self, new_manifest: dict):
         """
@@ -81,7 +81,7 @@ class VMRayFeed:
                     manifest.update(new_manifest)
                 else:
                     manifest = new_manifest
-        except (FileNotFoundError, json.JSONDecodeError) as exc:
+        except (FileNotFoundError, json.JSONDecodeError):
             self.logger.warning("Manifest file could not be read. Creating a new one.")
             manifest = new_manifest
 
@@ -103,7 +103,9 @@ class VMRayFeed:
             try:
                 event = parser.parse(submission_id)
             except VMRayParserError:
-                self.logger.exception("Error while parsing report")
+                self.logger.exception(
+                    "Error while parsing reports from submission %d", submission_id
+                )
                 continue
 
             event_feed = event.to_feed(with_meta=True)

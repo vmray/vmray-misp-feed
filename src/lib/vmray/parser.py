@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 import re
 
 from abc import ABC, abstractmethod
@@ -158,7 +159,7 @@ class FileArtifact(Artifact):
             ("sha256", self.sha256),
             ("ssdeep", self.ssdeep),
         ]
-        for (key, value) in hashes:
+        for key, value in hashes:
             if not value:
                 continue
 
@@ -278,7 +279,7 @@ class MutexArtifact(Artifact):
 
 @dataclass
 class ProcessArtifact(Artifact):
-    filename: str
+    filename: Optional[str] = None
     pid: Optional[int] = None
     parent_pid: Optional[int] = None
     cmd_line: Optional[str] = None
@@ -423,11 +424,10 @@ class VTI:
     score: int
 
 
-class VMRayParseError(Exception):
-    pass
-
-
 class ReportParser(ABC):
+    def __init__(self, analysis_id: int) -> None:
+        self.analysis_id = analysis_id
+
     @abstractmethod
     def is_static_report(self) -> bool:
         raise NotImplementedError()
@@ -463,7 +463,7 @@ class ReportParser(ABC):
 
 class Summary(ReportParser):
     def __init__(self, analysis_id: int, api: VMRay):
-        self.analysis_id = analysis_id
+        super().__init__(analysis_id)
 
         data = api.get_summary(analysis_id)
         self.report = json.load(data)
@@ -595,7 +595,7 @@ class Summary(ReportParser):
         for process in processes:
             classifications = process.get("classifications", [])
             cmd_line = process.get("cmd_line")
-            name = process["image_name"]
+            name = process.get("image_name")
             verdict = self.to_verdict(process.get("severity"))
             is_ioc = process.get("ioc", False)
 
@@ -692,7 +692,7 @@ class Summary(ReportParser):
 
 class SummaryV2(ReportParser):
     def __init__(self, analysis_id: int, api: VMRay):
-        self.analysis_id = analysis_id
+        super().__init__(analysis_id)
 
         data = api.get_summary_v2(analysis_id)
         self.report = json.load(data)
@@ -752,7 +752,6 @@ class SummaryV2(ReportParser):
                 continue
 
             for ip_address in self._resolve_refs(ref_ip_addresses):
-                artifact.ips.append(ip_address["ip_address"])
                 ip = ip_address.get("ip_address")
                 if ip is not None:
                     artifact.ips.append(ip)
@@ -840,7 +839,7 @@ class SummaryV2(ReportParser):
             artifact = ProcessArtifact(
                 pid=process["os_pid"],
                 parent_pid=process["origin_monitor_id"],
-                filename=process["filename"],
+                filename=process.get("filename"),
                 is_ioc=process["is_ioc"],
                 cmd_line=cmd_line,
                 classifications=classifications,
@@ -954,6 +953,8 @@ class VMRayParserError(Exception):
 
 class VMRayParser:
     def __init__(self, config: Config) -> None:
+        self.logger = logging.getLogger("vmray_feed.parser")
+
         vmray_conf = config.vmray
         self.api = VMRay(
             vmray_conf.host,
@@ -964,6 +965,10 @@ class VMRayParser:
         self.last_submission_id = vmray_conf.last_submission_id
 
         self.misp_config = config.misp_event
+
+        self.artifacts: List[Artifact] = []
+        self.mitre_attacks: List[MitreAttack] = []
+        self.vtis: List[VTI] = []
 
     @staticmethod
     def _analysis_score_to_taxonomies(analysis_score: int) -> Optional[str]:
@@ -1031,6 +1036,8 @@ class VMRayParser:
             analysis_id = analysis["analysis_id"]
             permalink = analysis["analysis_webif_url"]
 
+            self.logger.debug("Getting summary for analysis #%s", analysis_id)
+
             try:
                 report_parser = SummaryV2(api=self.api, analysis_id=analysis_id)
             except VMRayRESTAPIError:
@@ -1038,6 +1045,11 @@ class VMRayParser:
                     report_parser = Summary(api=self.api, analysis_id=analysis_id)
                 except VMRayRESTAPIError:
                     continue
+            except Exception:  # pylint: disable=broad-exception-caught
+                self.logger.exception(
+                    "Failed to load summary JSON for analysis #%d", analysis_id
+                )
+                continue
 
             if report_parser.is_static_report():
                 continue
@@ -1063,14 +1075,11 @@ class VMRayParser:
             yield submission
 
     def parse(self, submission_id: int) -> MISPEvent:
-        """ Convert analysis results to MISP Objects """
+        """Convert analysis results to MISP Objects"""
 
         event = MISPEvent()
         event.info = f"VMRay Platform report for submission {submission_id}"
         event.orgc = VMRayMISPOrg()
-        mitre_attacks = []
-        vtis = []
-        artifacts = []
 
         # add sandbox signature
         sb_sig = MISPObject(name="sb-signature")
@@ -1081,58 +1090,15 @@ class VMRayParser:
             return self._set_hash_and_verdict(event, submission_id)
 
         for report, permalink in reports:
-            # create sandbox object
-            obj = MISPObject(name="sandbox-report")
-            obj.add_attribute("on-premise-sandbox", "vmray")
-
-            if permalink:
-                obj.add_attribute("permalink", permalink)
-
-            if self.misp_config.include_report:
-                report_data = base64.b64encode(
-                    json.dumps(report.report, indent=2).encode("utf-8")
-                ).decode("utf-8")
-                obj.add_attribute(
-                    "sandbox-file", value="summary.json", data=report_data
+            try:
+                self.parse_report(event, report, permalink)
+            except Exception:  # pylint: disable=broad-exception-caught
+                self.logger.exception(
+                    "Failed to parse report from analysis #%d", report.analysis_id
                 )
 
-            score = report.score()
-            attr_score = obj.add_attribute("score", score)
-
-            if self.misp_config.use_vmray_tags:
-                attr_score.add_tag(f'vmray:verdict="{score}"')
-
-            sandbox_type = report.sandbox_type()
-            obj.add_attribute("sandbox-type", sandbox_type)
-
-            classifications = report.classifications()
-            if classifications:
-                obj.add_attribute("results", classifications)
-
-            event.add_object(obj)
-
-            if self.misp_config.include_vtis:
-                for vti in report.vtis():
-                    if vti not in vtis:
-                        vtis.append(vti)
-
-            for artifact in report.artifacts():
-                if self.misp_config.ioc_only and not artifact.is_ioc:
-                    continue
-
-                if artifact not in artifacts:
-                    artifacts.append(artifact)
-                else:
-                    idx = artifacts.index(artifact)
-                    dup = artifacts[idx]
-                    dup.merge(artifact)
-
-            for mitre_attack in report.mitre_attacks():
-                if mitre_attack not in mitre_attacks:
-                    mitre_attacks.append(mitre_attack)
-
         # process VTI's
-        for vti in vtis:
+        for vti in self.vtis:
             vti_text = f"{vti.category}: {vti.operation}. {vti.technique}"
             vti_attr = sb_sig.add_attribute("signature", value=vti_text)
 
@@ -1145,12 +1111,12 @@ class VMRayParser:
             event.add_object(sb_sig)
 
         # process artifacts
-        for artifact in artifacts:
+        for artifact in self.artifacts:
             artifact_obj = artifact.to_misp_object(self.misp_config.use_vmray_tags)
             event.add_object(artifact_obj)
 
         # tag event with Mitre Att&ck
-        for mitre_attack in mitre_attacks:
+        for mitre_attack in self.mitre_attacks:
             event.add_tag(mitre_attack.to_misp_galaxy())
 
         # tag event
@@ -1160,3 +1126,54 @@ class VMRayParser:
                 event.add_tag(f'vmray:verdict="{verdict}"')
 
         return event
+
+    def parse_report(
+        self, event: MISPEvent, report: ReportParser, permalink: Optional[str]
+    ) -> None:
+        # create sandbox object
+        obj = MISPObject(name="sandbox-report")
+        obj.add_attribute("on-premise-sandbox", "vmray")
+
+        if permalink:
+            obj.add_attribute("permalink", permalink)
+
+        if self.misp_config.include_report:
+            report_data = base64.b64encode(
+                json.dumps(report.report, indent=2).encode("utf-8")
+            ).decode("utf-8")
+            obj.add_attribute("sandbox-file", value="summary.json", data=report_data)
+
+        score = report.score()
+        attr_score = obj.add_attribute("score", score)
+
+        if self.misp_config.use_vmray_tags:
+            attr_score.add_tag(f'vmray:verdict="{score}"')
+
+        sandbox_type = report.sandbox_type()
+        obj.add_attribute("sandbox-type", sandbox_type)
+
+        classifications = report.classifications()
+        if classifications:
+            obj.add_attribute("results", classifications)
+
+        event.add_object(obj)
+
+        if self.misp_config.include_vtis:
+            for vti in report.vtis():
+                if vti not in self.vtis:
+                    self.vtis.append(vti)
+
+        for artifact in report.artifacts():
+            if self.misp_config.ioc_only and not artifact.is_ioc:
+                continue
+
+            if artifact not in self.artifacts:
+                self.artifacts.append(artifact)
+            else:
+                idx = self.artifacts.index(artifact)
+                dup = self.artifacts[idx]
+                dup.merge(artifact)
+
+        for mitre_attack in report.mitre_attacks():
+            if mitre_attack not in self.mitre_attacks:
+                self.mitre_attacks.append(mitre_attack)

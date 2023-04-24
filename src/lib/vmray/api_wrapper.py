@@ -5,10 +5,24 @@ from requests.exceptions import ConnectionError as ConnectionErr
 
 from vmray.rest_api import VMRayRESTAPI, VMRayRESTAPIError
 
+try:
+    from vmray.rest_api.rest_api import (  # pylint: disable=unused-import
+        DEFAULT_USER_AGENT,
+    )
+
+    HAS_USER_AGENT = True
+except ImportError:
+    HAS_USER_AGENT = False
+
 
 class VMRay(VMRayRESTAPI):
     def __init__(self, server, api_key, verify_cert, limit: Optional[int] = None):
-        super().__init__(server, api_key, verify_cert=verify_cert)
+        if HAS_USER_AGENT:
+            super().__init__(
+                server, api_key, verify_cert=verify_cert, connector_name="MISP feed"
+            )
+        else:
+            super().__init__(server, api_key, verify_cert=verify_cert)
 
         try:
             self.call("GET", "/rest/analysis", params={"_limit": "1"})
