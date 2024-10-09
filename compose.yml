@@ -1,0 +1,13 @@
+services:
+  feed:
+    build: .
+    volumes:
+      - ./config.toml:/config.toml
+      - ./vmray-misp-feed:/var/www/MISP/app/tmp/vmray-misp-feed
+  feed-server:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./vmray-misp-feed:/var/www/feed
