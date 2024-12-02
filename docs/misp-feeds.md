@@ -18,5 +18,16 @@ Go to `Sync Action -> List Feeds` and click on `Add Feed` on the left hand side 
 
 ![Screenshot](./assets/create-feed.png)
 
-If you prefer to only import samples that have a verdict of Malicious, click on `Modify` under `Filter rules` and add `vmray:verdict="malicious"` to the allowed tags. You also need to set `use_vmray_tags = true` in the `config.toml` in the **vmray-misp-feed** folder.
+### Filtering
 
+By filtering for VMRay tags, you can specify both allowed and blocked tags, allowing for more precise control over which items are imported. For a full list of supported VMRay tags, visit **Event Actions / List Taxonomies / vmray**. By enabling all **vmray** taxonomies, you can gain access to a wider selection of tags used by VMRay.
+
+If you wish to import only samples labeled with a verdict of 'malicious', please follow the steps outlined in the example below:
+
+1. Navigate to **Sync Action / Feeds** and select **Edit VMRay Feed**.
+2. Click on **Modify** under **Filter Rules** to open the **Set Pull Rules** window.
+3. In the **Show freetext input** section, enter the tag:  
+   `vmray:verdict="malicious"`. Alternatively, if the **vmray taxonomies** are enabled, you can use the pre-configured tags.
+4. Click the left arrow to add the tag to the allowed tags list.
+
+Additionally, ensure that you set `use_vmray_tags = true` in the `config.toml` file located in the **vmray-misp-feed** folder.
