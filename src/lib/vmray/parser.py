@@ -46,7 +46,7 @@ class Artifact:
         raise NotImplementedError()
 
     @abstractmethod
-    def __eq__(self, other: "Artifact") -> bool:
+    def __eq__(self, other: object) -> bool:
         raise NotImplementedError()
 
     def tag_artifact_attribute(self, attribute: MISPAttribute) -> None:
@@ -71,7 +71,7 @@ class DomainArtifact(Artifact):
         attr = obj.add_attribute(
             "domain", value=self.domain, to_ids=self.is_ioc, comment=classifications
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         for ip in self.ips:
@@ -86,7 +86,7 @@ class DomainArtifact(Artifact):
         self.ips = merge_lists(self.ips, other.ips)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, DomainArtifact):
             return NotImplemented
 
@@ -108,7 +108,7 @@ class EmailArtifact(Artifact):
             attr = obj.add_attribute(
                 "from", value=self.sender, to_ids=self.is_ioc, comment=classifications
             )
-            if tag:
+            if tag and attr:
                 self.tag_artifact_attribute(attr)
 
         if self.subject:
@@ -126,7 +126,7 @@ class EmailArtifact(Artifact):
         self.recipients = merge_lists(self.recipients, other.recipients)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, EmailArtifact):
             return NotImplemented
 
@@ -167,7 +167,7 @@ class FileArtifact(Artifact):
                 key, value=value, to_ids=self.is_ioc, comment=classifications
             )
 
-            if tag:
+            if tag and attr:
                 self.tag_artifact_attribute(attr)
 
         if self.mimetype:
@@ -197,7 +197,7 @@ class FileArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, FileArtifact):
             return NotImplemented
 
@@ -217,7 +217,7 @@ class IpArtifact(Artifact):
         attr = obj.add_attribute(
             "ip", value=self.ip, comment=classifications, to_ids=self.is_ioc
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         return obj
@@ -229,7 +229,7 @@ class IpArtifact(Artifact):
         self.sources = merge_lists(self.sources, other.sources)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, IpArtifact):
             return NotImplemented
 
@@ -253,7 +253,7 @@ class MutexArtifact(Artifact):
             to_ids=False,
             comment=classifications,
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         operations = None
@@ -270,7 +270,7 @@ class MutexArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, MutexArtifact):
             return NotImplemented
 
@@ -298,11 +298,20 @@ class ProcessArtifact(Artifact):
             )
 
         classifications = classifications_to_str(self.classifications)
-        name_attr = obj.add_attribute(
-            "name", self.filename, category="External analysis", comment=classifications
-        )
+        if self.filename:
+            name_attr = obj.add_attribute(
+                "name",
+                self.filename,
+                category="External analysis",
+                comment=classifications,
+            )
+        else:
+            name_attr = None
 
-        cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
+        if self.cmd_line is None or self.cmd_line.strip():
+            cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
+        else:
+            cmd_attr = None
 
         if tag:
             if name_attr is not None:
@@ -319,7 +328,7 @@ class ProcessArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, ProcessArtifact):
             return NotImplemented
 
@@ -341,7 +350,7 @@ class RegistryArtifact(Artifact):
         attr = obj.add_attribute(
             "key", value=self.key, to_ids=self.is_ioc, comment=operations
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         return obj
@@ -352,7 +361,7 @@ class RegistryArtifact(Artifact):
 
         self.operations = merge_lists(self.operations, other.operations)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, RegistryArtifact):
             return NotImplemented
 
@@ -380,7 +389,7 @@ class UrlArtifact(Artifact):
             category="External analysis",
             to_ids=False,
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         if self.domain:
@@ -400,7 +409,7 @@ class UrlArtifact(Artifact):
         self.ips = merge_lists(self.ips, other.ips)
         self.operations = merge_lists(self.operations, other.operations)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, UrlArtifact):
             return NotImplemented
 
@@ -420,11 +429,13 @@ class MitreAttack:
 class VTI:
     category: str
     operation: str
-    technique: str
     score: int
+    technique: str | None = None
 
 
 class ReportParser(ABC):
+    report: dict
+
     def __init__(self, analysis_id: int) -> None:
         self.analysis_id = analysis_id
 
@@ -438,10 +449,6 @@ class ReportParser(ABC):
 
     @abstractmethod
     def classifications(self) -> Optional[str]:
-        raise NotImplementedError()
-
-    @abstractmethod
-    def details(self) -> Iterator[str]:
         raise NotImplementedError()
 
     @abstractmethod
@@ -469,7 +476,7 @@ class Summary(ReportParser):
         self.report = json.load(data)
 
     @staticmethod
-    def to_verdict(score: Union[int, str]) -> Optional[str]:
+    def to_verdict(score: Union[int, str]) -> str:
         if isinstance(score, int):
             if 0 <= score <= 24:
                 return "clean"
@@ -487,7 +494,7 @@ class Summary(ReportParser):
             if score in ("not_available", "unknown"):
                 return "n/a"
             return score
-        return None
+        return "n/a"
 
     def is_static_report(self) -> bool:
         return self.report["vti"]["vti_rule_type"] == "Static"
@@ -641,18 +648,6 @@ class Summary(ReportParser):
             str_classifications = ", ".join(classifications)
             return f"Classifications: {str_classifications}"
         return None
-
-    def details(self) -> Iterator[str]:
-        details = self.report["analysis_details"]
-        execution_successful = details["execution_successful"]
-        termination_reason = details["termination_reason"]
-        result = details["result_str"]
-
-        analysis = f" {self.analysis_id}" if self.analysis_id != 0 else ""
-
-        yield f"Analysis{analysis}: execution_successful: {execution_successful}"
-        yield f"Analysis{analysis}: termination_reason: {termination_reason}"
-        yield f"Analysis{analysis}: result: {result}"
 
     def mitre_attacks(self) -> Iterator[MitreAttack]:
         mitre_attack = self.report["mitre_attack"]
@@ -888,16 +883,6 @@ class SummaryV2(ReportParser):
         except KeyError:
             return None
 
-    def details(self) -> Iterator[str]:
-        details = self.report["analysis_metadata"]
-        is_execution_successful = details["is_execution_successful"]
-        termination_reason = details["termination_reason"]
-        result = details["result_str"]
-
-        yield f"Analysis {self.analysis_id}: execution_successful: {is_execution_successful}"
-        yield f"Analysis {self.analysis_id}: termination_reason: {termination_reason}"
-        yield f"Analysis {self.analysis_id}: result: {result}"
-
     def mitre_attacks(self) -> Iterator[MitreAttack]:
         mitre_attack = self.report["mitre_attack"]
         techniques = mitre_attack["v4"]["techniques"]
@@ -1102,7 +1087,7 @@ class VMRayParser:
             vti_text = f"{vti.category}: {vti.operation}. {vti.technique}"
             vti_attr = sb_sig.add_attribute("signature", value=vti_text)
 
-            if self.misp_config.use_vmray_tags:
+            if self.misp_config.use_vmray_tags and vti_attr:
                 value = self._analysis_score_to_taxonomies(vti.score)
                 if value:
                     vti_attr.add_tag(f'vmray:vti_analysis_score="{value}"')
@@ -1146,7 +1131,7 @@ class VMRayParser:
         score = report.score()
         attr_score = obj.add_attribute("score", score)
 
-        if self.misp_config.use_vmray_tags:
+        if self.misp_config.use_vmray_tags and attr_score:
             attr_score.add_tag(f'vmray:verdict="{score}"')
 
         sandbox_type = report.sandbox_type()
