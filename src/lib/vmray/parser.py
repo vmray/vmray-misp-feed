@@ -2,19 +2,17 @@ import base64
 import json
 import logging
 import re
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import PureWindowsPath
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
-from pymisp import MISPAttribute, MISPEvent, MISPObject
-from pymisp.mispevent import MISPOrganisation
+from pymisp.mispevent import MISPAttribute, MISPEvent, MISPObject, MISPOrganisation
 from vmray.rest_api import VMRayRESTAPIError
 
 from lib.config import Config
-from .api_wrapper import VMRay
 
+from .api_wrapper import VMRay
 
 USER_RE = re.compile(r".:.Users\\(.*?)\\", re.IGNORECASE)
 DOC_RE = re.compile(r".:.DOCUME~1.\\(.*?)\\", re.IGNORECASE)
@@ -924,6 +922,126 @@ class SummaryV2(ReportParser):
             yield new_vti
 
 
+class SampleReport:
+    def __init__(self, submission_id: int, api: VMRay) -> None:
+        self.api = api
+        self.sample_id = self.api.get_submission(submission_id)["submission_sample_id"]
+        self.sample_info = self.api.get_sample_info(self.sample_id)
+
+    def vtis(self) -> Iterator[VTI]:
+        vtis = self.api.get_vtis(self.sample_id)
+        for vti in vtis:
+            new_vti = VTI(
+                category=vti["category"],
+                operation=vti["operation"],
+                score=vti["score"],
+            )
+            yield new_vti
+
+    def artifacts(self) -> Iterator[Artifact]:
+        iocs = self.api.get_iocs(self.sample_id)
+        if not iocs:
+            return
+
+        for file_ioc in iocs.get("files", []):
+            filenames = (
+                [] if file_ioc.get("filenames") is None else file_ioc.get("filenames")
+            )
+            hashes = file_ioc["hashes"][0]
+            artifact = FileArtifact(
+                operations=file_ioc.get("operations", []),
+                md5=hashes["md5_hash"],
+                sha1=hashes["sha1_hash"],
+                sha256=hashes["sha256_hash"],
+                ssdeep=hashes.get("ssdeep_hash"),
+                imphash=hashes.get("imp_hash"),
+                mimetype=file_ioc.get("mime_type"),
+                filenames=filenames,
+                is_ioc=file_ioc["ioc"],
+                classifications=file_ioc["classifications"],
+                size=file_ioc["file_size"],
+                verdict=file_ioc["verdict"],
+            )
+            yield artifact
+
+        for mutex in iocs["mutexes"]:
+            name = mutex["mutex_name"]
+            artifact = MutexArtifact(
+                name=name if name else "",
+                operations=mutex["operations"],
+                verdict=mutex["verdict"],
+                classifications=mutex["classifications"],
+                is_ioc=mutex["ioc"],
+            )
+            yield artifact
+
+        for reg in iocs["registry"]:
+            artifact = RegistryArtifact(
+                key=reg.get("reg_key_name"),
+                operations=reg["operations"],
+                is_ioc=reg["ioc"],
+                verdict=reg["verdict"],
+            )
+            yield artifact
+
+        for ip in iocs["ips"]:
+            artifact = IpArtifact(
+                ip=ip.get("ip_address"),
+                sources=ip["sources"],
+                verdict=ip["verdict"],
+                is_ioc=ip["ioc"],
+            )
+            yield artifact
+
+        for url in iocs["urls"]:
+            artifact = UrlArtifact(
+                url=url.get("url"),
+                operations=url.get("operations", []),
+                is_ioc=url["ioc"],
+                ips=url["ip_addresses"],
+                verdict=url["verdict"],
+            )
+            yield artifact
+
+        for domain in iocs["domains"]:
+            artifact = DomainArtifact(
+                domain=domain["domain"],
+                sources=domain["sources"],
+                is_ioc=domain["ioc"],
+                verdict=domain["verdict"],
+            )
+            yield artifact
+
+        for email in iocs["emails"]:
+            artifact = EmailArtifact(
+                sender=email.get("sender"),
+                subject=email.get("subject"),
+                recipients=email["recipients"],
+                classifications=email["classifications"],
+                verdict=email["verdict"],
+                is_ioc=email["ioc"],
+            )
+            yield artifact
+
+        for process in iocs["processes"]:
+            artifact = ProcessArtifact(
+                cmd_line=process.get("cmd_line"),
+                is_ioc=process["ioc"],
+                classifications=process["classifications"],
+                verdict=process["verdict"],
+            )
+            yield artifact
+
+    def mitre_attacks(self) -> Iterator[MitreAttack]:
+        mitre_attack_techniques = self.api.get_mitre_attack(self.sample_id)
+        for technique in mitre_attack_techniques:
+            mitre_attack = MitreAttack(
+                description=technique["technique"],
+                id=technique["technique_id"],
+            )
+            yield mitre_attack
+
+
 class VMRayMISPOrg(MISPOrganisation):  # pylint: disable=too-many-ancestors
     def __init__(self):
         super().__init__()
@@ -975,11 +1093,14 @@ class VMRayParser:
         analysis_results = self.api.get_analyses_by_submission(submission_id)
         return all(a["analysis_billing_type"] == "detector" for a in analysis_results)
 
-    def _set_hash_and_verdict(self, event: MISPEvent, submissions_id: int) -> MISPEvent:
+    def _add_sample_info(
+        self, event: MISPEvent, sb_sig: MISPObject, submissions_id: int
+    ) -> MISPEvent:
         verdict = self._get_sample_verdict(submissions_id)
         submission = self.api.get_submission(submissions_id)
         sample_id = submission["submission_sample_id"]
         sample_info = self.api.get_sample_info(sample_id)
+        is_ioc = False
 
         if verdict:
             is_ioc = verdict in ("malicious", "suspicious")
@@ -1000,6 +1121,30 @@ class VMRayParser:
             is_ioc=is_ioc,
         )
 
+        report = SampleReport(submissions_id, self.api)
+
+        # set sample VTIs
+        if self.misp_config.include_vtis:
+            for vti in report.vtis():
+                vti_text = f"{vti.category}: {vti.operation}"
+                vti_attr = sb_sig.add_attribute("signature", value=vti_text)
+
+                if self.misp_config.use_vmray_tags and vti_attr:
+                    value = self._analysis_score_to_taxonomies(vti.score)
+                    if value:
+                        vti_attr.add_tag(f'vmray:vti_analysis_score="{value}"')
+            if len(sb_sig.attributes) > 1:
+                event.add_object(sb_sig)
+
+        # set sample IOCs
+        for ioc in report.artifacts():
+            ioc_obj = ioc.to_misp_object(self.misp_config.use_vmray_tags)
+            event.add_object(ioc_obj)
+
+        # set sample MITRE ATT&CK
+        for mitre_attack in report.mitre_attacks():
+            event.add_tag(mitre_attack.to_misp_galaxy())
+
         artifact_obj = file_artifact.to_misp_object(self.misp_config.use_vmray_tags)
         event.add_object(artifact_obj)
 
@@ -1007,6 +1152,7 @@ class VMRayParser:
         if self.misp_config.use_vmray_tags and verdict:
             event.add_tag(f'vmray:verdict="{verdict}"')
 
+        self.logger.debug("Added %d objects to event.", len(event.objects))
         return event
 
     def _reports(
@@ -1020,6 +1166,12 @@ class VMRayParser:
 
             analysis_id = analysis["analysis_id"]
             permalink = analysis["analysis_webif_url"]
+            locked_report = analysis["analysis_quota_type"] == "verdict"
+            if locked_report:
+                self.logger.debug(
+                    "Skipping download of locked analysis #%s", analysis_id
+                )
+                continue
 
             self.logger.debug("Getting summary for analysis #%s", analysis_id)
 
@@ -1072,7 +1224,8 @@ class VMRayParser:
 
         reports = list(self._reports(submission_id))
         if self._detector_analyses_only(submission_id) or len(reports) == 0:
-            return self._set_hash_and_verdict(event, submission_id)
+            self.logger.debug("No reports to process. Adding sample information.")
+            return self._add_sample_info(event, sb_sig, submission_id)
 
         for report, permalink in reports:
             try:

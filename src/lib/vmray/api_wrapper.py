@@ -92,8 +92,32 @@ class VMRay(VMRayRESTAPI):
     def get_summary_v2(self, analysis_id: int) -> BinaryIO:
         return self.get_file_from_archive(analysis_id, "logs/summary_v2.json")
 
-    def get_report(self, analysis_id: int) -> dict:
+    def get_report(self, analysis_id: int) -> BinaryIO:
         try:
             return self.get_summary_v2(analysis_id)
         except VMRayRESTAPIError:
             return self.get_summary(analysis_id)
+
+    def get_analysis(self, analysis_id: int) -> dict:
+        return self.call("GET", f"/rest/analysis/{analysis_id}")
+
+    def get_vtis(self, sample_id: int) -> List[dict]:
+        vti_data = self.call("GET", f"/rest/sample/{sample_id}/vtis")
+        try:
+            return vti_data["threat_indicators"]
+        except KeyError:
+            return []
+
+    def get_iocs(self, sample_id: int) -> dict:
+        ioc_data = self.call("GET", f"/rest/sample/{sample_id}/iocs")
+        try:
+            return ioc_data["iocs"]
+        except KeyError:
+            return {}
+
+    def get_mitre_attack(self, sample_id: int) -> List[dict]:
+        mitre_attack_data = self.call("GET", f"/rest/sample/{sample_id}/mitre_attack")
+        try:
+            return mitre_attack_data["mitre_attack_techniques"]
+        except KeyError:
+            return []
