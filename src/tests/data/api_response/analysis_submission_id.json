@@ -30,6 +30,8 @@
       "analysis_prescript_id": null,
       "analysis_priority": 1,
       "analysis_published": false,
+      "analysis_quota_type": "report",
+      "analysis_reanalysis": false,
       "analysis_report_version": 10,
       "analysis_result_code": 1,
       "analysis_result_str": "Operation completed successfully.",
