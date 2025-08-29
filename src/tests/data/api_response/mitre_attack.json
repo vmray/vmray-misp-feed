@@ -1,0 +1,195 @@
+{
+    "data": {
+        "mitre_attack_techniques": [
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 1,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Persistence"
+                ],
+                "technique": "Registry Run Keys / Startup Folder",
+                "technique_id": "T1060",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "Persistence",
+                        "classifications": [],
+                        "id": 7,
+                        "operation": "Installs system startup script or application",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 9,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Defense Evasion"
+                ],
+                "technique": "Software Packing",
+                "technique_id": "T1045",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "Obfuscation",
+                        "classifications": [],
+                        "id": 41,
+                        "operation": "Resolves API functions dynamically",
+                        "score": 1
+                    },
+                    {
+                        "analysis_ids": [
+                            1483,
+                            1484
+                        ],
+                        "category": "Obfuscation",
+                        "classifications": [],
+                        "id": 91,
+                        "operation": "The binary file was created with a packer",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 19,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Defense Evasion"
+                ],
+                "technique": "Hidden Window",
+                "technique_id": "T1143",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "Hide Tracks",
+                        "classifications": [],
+                        "id": 40,
+                        "operation": "Creates process with hidden window",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 25,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Defense Evasion"
+                ],
+                "technique": "File System Logical Offsets",
+                "technique_id": "T1006",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "Defense Evasion",
+                        "classifications": [],
+                        "id": 48,
+                        "operation": "Accesses volumes directly",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 29,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Defense Evasion"
+                ],
+                "technique": "Modify Registry",
+                "technique_id": "T1112",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "Persistence",
+                        "classifications": [],
+                        "id": 7,
+                        "operation": "Installs system startup script or application",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 30,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Impact"
+                ],
+                "technique": "Data Destruction",
+                "technique_id": "T1485",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1484
+                        ],
+                        "category": "System Modification",
+                        "classifications": [],
+                        "id": 8,
+                        "operation": "Modifies operating system directory",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            },
+            {
+                "analysis_ids": [
+                    1484
+                ],
+                "id": 31,
+                "matrix_version": "2019-04-25T20:53:07.719000",
+                "tactics": [
+                    "Defense Evasion"
+                ],
+                "technique": "Obfuscated Files or Information",
+                "technique_id": "T1027",
+                "threat_indicators": [
+                    {
+                        "analysis_ids": [
+                            1483,
+                            1484
+                        ],
+                        "category": "Obfuscation",
+                        "classifications": [],
+                        "id": 91,
+                        "operation": "The binary file was created with a packer",
+                        "score": 1
+                    }
+                ],
+                "version": 1.0
+            }
+        ],
+        "status": "finished"
+    },
+    "result": "ok"
+}

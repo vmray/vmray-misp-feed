@@ -58,9 +58,22 @@ def mock_vmray_server(requests_mock, api_dir):
 
     with open(api_dir / "submission.json", "r", encoding="utf-8") as fobj:
         submission = json.load(fobj)
-    requests_mock.get("https://test/rest/submission/12", json=submission)
+    requests_mock.get(re.compile(r"https://test/rest/submission/\d+"), json=submission)
 
     with open(api_dir / "sample.json", "r", encoding="utf-8") as fobj:
         sample = json.load(fobj)
-
     requests_mock.get(re.compile(r"test/rest/sample/\d+"), json=sample)
+
+    with open(api_dir / "iocs.json", "r", encoding="utf-8") as fobj:
+        iocs = json.load(fobj)
+    requests_mock.get(re.compile(r"test/rest/sample/\d+/iocs"), json=iocs)
+
+    with open(api_dir / "vtis.json", "r", encoding="utf-8") as fobj:
+        vtis = json.load(fobj)
+    requests_mock.get(re.compile(r"test/rest/sample/\d+/vtis"), json=vtis)
+
+    with open(api_dir / "mitre_attack.json", "r", encoding="utf-8") as fobj:
+        mitre_attack = json.load(fobj)
+    requests_mock.get(
+        re.compile(r"test/rest/sample/\d+/mitre_attack"), json=mitre_attack
+    )

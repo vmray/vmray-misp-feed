@@ -2,19 +2,17 @@ import base64
 import json
 import logging
 import re
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import PureWindowsPath
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
-from pymisp import MISPAttribute, MISPEvent, MISPObject
-from pymisp.mispevent import MISPOrganisation
+from pymisp.mispevent import MISPAttribute, MISPEvent, MISPObject, MISPOrganisation
 from vmray.rest_api import VMRayRESTAPIError
 
 from lib.config import Config
-from .api_wrapper import VMRay
 
+from .api_wrapper import VMRay
 
 USER_RE = re.compile(r".:.Users\\(.*?)\\", re.IGNORECASE)
 DOC_RE = re.compile(r".:.DOCUME~1.\\(.*?)\\", re.IGNORECASE)
@@ -46,7 +44,7 @@ class Artifact:
         raise NotImplementedError()
 
     @abstractmethod
-    def __eq__(self, other: "Artifact") -> bool:
+    def __eq__(self, other: object) -> bool:
         raise NotImplementedError()
 
     def tag_artifact_attribute(self, attribute: MISPAttribute) -> None:
@@ -71,7 +69,7 @@ class DomainArtifact(Artifact):
         attr = obj.add_attribute(
             "domain", value=self.domain, to_ids=self.is_ioc, comment=classifications
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         for ip in self.ips:
@@ -86,7 +84,7 @@ class DomainArtifact(Artifact):
         self.ips = merge_lists(self.ips, other.ips)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, DomainArtifact):
             return NotImplemented
 
@@ -108,7 +106,7 @@ class EmailArtifact(Artifact):
             attr = obj.add_attribute(
                 "from", value=self.sender, to_ids=self.is_ioc, comment=classifications
             )
-            if tag:
+            if tag and attr:
                 self.tag_artifact_attribute(attr)
 
         if self.subject:
@@ -126,7 +124,7 @@ class EmailArtifact(Artifact):
         self.recipients = merge_lists(self.recipients, other.recipients)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, EmailArtifact):
             return NotImplemented
 
@@ -167,7 +165,7 @@ class FileArtifact(Artifact):
                 key, value=value, to_ids=self.is_ioc, comment=classifications
             )
 
-            if tag:
+            if tag and attr:
                 self.tag_artifact_attribute(attr)
 
         if self.mimetype:
@@ -197,7 +195,7 @@ class FileArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, FileArtifact):
             return NotImplemented
 
@@ -217,7 +215,7 @@ class IpArtifact(Artifact):
         attr = obj.add_attribute(
             "ip", value=self.ip, comment=classifications, to_ids=self.is_ioc
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         return obj
@@ -229,7 +227,7 @@ class IpArtifact(Artifact):
         self.sources = merge_lists(self.sources, other.sources)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, IpArtifact):
             return NotImplemented
 
@@ -246,20 +244,22 @@ class MutexArtifact(Artifact):
         obj = MISPObject(name="mutex")
 
         classifications = classifications_to_str(self.classifications)
-        attr = obj.add_attribute(
-            "name",
-            value=self.name,
-            category="External analysis",
-            to_ids=False,
-            comment=classifications,
-        )
-        if tag:
-            self.tag_artifact_attribute(attr)
+
+        if self.name.strip():
+            attr = obj.add_attribute(
+                "name",
+                value=self.name,
+                category="External analysis",
+                to_ids=False,
+                comment=classifications,
+            )
+            if tag and attr:
+                self.tag_artifact_attribute(attr)
 
         operations = None
         if self.operations:
             operations = "Operations: " + ", ".join(self.operations)
-        obj.add_attribute("description", value=operations, to_ids=False)
+            obj.add_attribute("description", value=operations, to_ids=False)
 
         return obj
 
@@ -270,7 +270,7 @@ class MutexArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, MutexArtifact):
             return NotImplemented
 
@@ -298,11 +298,20 @@ class ProcessArtifact(Artifact):
             )
 
         classifications = classifications_to_str(self.classifications)
-        name_attr = obj.add_attribute(
-            "name", self.filename, category="External analysis", comment=classifications
-        )
+        if self.filename:
+            name_attr = obj.add_attribute(
+                "name",
+                self.filename,
+                category="External analysis",
+                comment=classifications,
+            )
+        else:
+            name_attr = None
 
-        cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
+        if self.cmd_line is not None and self.cmd_line.strip():
+            cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
+        else:
+            cmd_attr = None
 
         if tag:
             if name_attr is not None:
@@ -319,7 +328,7 @@ class ProcessArtifact(Artifact):
         self.operations = merge_lists(self.operations, other.operations)
         self.classifications = merge_lists(self.classifications, other.classifications)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, ProcessArtifact):
             return NotImplemented
 
@@ -341,7 +350,7 @@ class RegistryArtifact(Artifact):
         attr = obj.add_attribute(
             "key", value=self.key, to_ids=self.is_ioc, comment=operations
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         return obj
@@ -352,7 +361,7 @@ class RegistryArtifact(Artifact):
 
         self.operations = merge_lists(self.operations, other.operations)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, RegistryArtifact):
             return NotImplemented
 
@@ -380,7 +389,7 @@ class UrlArtifact(Artifact):
             category="External analysis",
             to_ids=False,
         )
-        if tag:
+        if tag and attr:
             self.tag_artifact_attribute(attr)
 
         if self.domain:
@@ -400,7 +409,7 @@ class UrlArtifact(Artifact):
         self.ips = merge_lists(self.ips, other.ips)
         self.operations = merge_lists(self.operations, other.operations)
 
-    def __eq__(self, other: Artifact) -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, UrlArtifact):
             return NotImplemented
 
@@ -420,11 +429,13 @@ class MitreAttack:
 class VTI:
     category: str
     operation: str
-    technique: str
     score: int
+    technique: str | None = None
 
 
 class ReportParser(ABC):
+    report: dict
+
     def __init__(self, analysis_id: int) -> None:
         self.analysis_id = analysis_id
 
@@ -438,10 +449,6 @@ class ReportParser(ABC):
 
     @abstractmethod
     def classifications(self) -> Optional[str]:
-        raise NotImplementedError()
-
-    @abstractmethod
-    def details(self) -> Iterator[str]:
         raise NotImplementedError()
 
     @abstractmethod
@@ -469,7 +476,7 @@ class Summary(ReportParser):
         self.report = json.load(data)
 
     @staticmethod
-    def to_verdict(score: Union[int, str]) -> Optional[str]:
+    def to_verdict(score: Union[int, str]) -> str:
         if isinstance(score, int):
             if 0 <= score <= 24:
                 return "clean"
@@ -487,7 +494,7 @@ class Summary(ReportParser):
             if score in ("not_available", "unknown"):
                 return "n/a"
             return score
-        return None
+        return "n/a"
 
     def is_static_report(self) -> bool:
         return self.report["vti"]["vti_rule_type"] == "Static"
@@ -641,18 +648,6 @@ class Summary(ReportParser):
             str_classifications = ", ".join(classifications)
             return f"Classifications: {str_classifications}"
         return None
-
-    def details(self) -> Iterator[str]:
-        details = self.report["analysis_details"]
-        execution_successful = details["execution_successful"]
-        termination_reason = details["termination_reason"]
-        result = details["result_str"]
-
-        analysis = f" {self.analysis_id}" if self.analysis_id != 0 else ""
-
-        yield f"Analysis{analysis}: execution_successful: {execution_successful}"
-        yield f"Analysis{analysis}: termination_reason: {termination_reason}"
-        yield f"Analysis{analysis}: result: {result}"
 
     def mitre_attacks(self) -> Iterator[MitreAttack]:
         mitre_attack = self.report["mitre_attack"]
@@ -888,16 +883,6 @@ class SummaryV2(ReportParser):
         except KeyError:
             return None
 
-    def details(self) -> Iterator[str]:
-        details = self.report["analysis_metadata"]
-        is_execution_successful = details["is_execution_successful"]
-        termination_reason = details["termination_reason"]
-        result = details["result_str"]
-
-        yield f"Analysis {self.analysis_id}: execution_successful: {is_execution_successful}"
-        yield f"Analysis {self.analysis_id}: termination_reason: {termination_reason}"
-        yield f"Analysis {self.analysis_id}: result: {result}"
-
     def mitre_attacks(self) -> Iterator[MitreAttack]:
         mitre_attack = self.report["mitre_attack"]
         techniques = mitre_attack["v4"]["techniques"]
@@ -937,6 +922,126 @@ class SummaryV2(ReportParser):
             )
 
             yield new_vti
+
+
+class SampleReport:
+    def __init__(self, submission_id: int, api: VMRay) -> None:
+        self.api = api
+        self.sample_id = self.api.get_submission(submission_id)["submission_sample_id"]
+        self.sample_info = self.api.get_sample_info(self.sample_id)
+
+    def vtis(self) -> Iterator[VTI]:
+        vtis = self.api.get_vtis(self.sample_id)
+        for vti in vtis:
+            new_vti = VTI(
+                category=vti["category"],
+                operation=vti["operation"],
+                score=vti["score"],
+            )
+            yield new_vti
+
+    def artifacts(self) -> Iterator[Artifact]:
+        iocs = self.api.get_iocs(self.sample_id)
+        if not iocs:
+            return
+
+        for file_ioc in iocs.get("files", []):
+            filenames = (
+                [] if file_ioc.get("filenames") is None else file_ioc.get("filenames")
+            )
+            hashes = file_ioc["hashes"][0]
+            artifact = FileArtifact(
+                operations=file_ioc.get("operations", []),
+                md5=hashes["md5_hash"],
+                sha1=hashes["sha1_hash"],
+                sha256=hashes["sha256_hash"],
+                ssdeep=hashes.get("ssdeep_hash"),
+                imphash=hashes.get("imp_hash"),
+                mimetype=file_ioc.get("mime_type"),
+                filenames=filenames,
+                is_ioc=file_ioc["ioc"],
+                classifications=file_ioc["classifications"],
+                size=file_ioc["file_size"],
+                verdict=file_ioc["verdict"],
+            )
+            yield artifact
+
+        for mutex in iocs["mutexes"]:
+            name = mutex["mutex_name"]
+            artifact = MutexArtifact(
+                name=name if name else "",
+                operations=mutex["operations"],
+                verdict=mutex["verdict"],
+                classifications=mutex["classifications"],
+                is_ioc=mutex["ioc"],
+            )
+            yield artifact
+
+        for reg in iocs["registry"]:
+            artifact = RegistryArtifact(
+                key=reg.get("reg_key_name"),
+                operations=reg["operations"],
+                is_ioc=reg["ioc"],
+                verdict=reg["verdict"],
+            )
+            yield artifact
+
+        for ip in iocs["ips"]:
+            artifact = IpArtifact(
+                ip=ip.get("ip_address"),
+                sources=ip["sources"],
+                verdict=ip["verdict"],
+                is_ioc=ip["ioc"],
+            )
+            yield artifact
+
+        for url in iocs["urls"]:
+            artifact = UrlArtifact(
+                url=url.get("url"),
+                operations=url.get("operations", []),
+                is_ioc=url["ioc"],
+                ips=url["ip_addresses"],
+                verdict=url["verdict"],
+            )
+            yield artifact
+
+        for domain in iocs["domains"]:
+            artifact = DomainArtifact(
+                domain=domain["domain"],
+                sources=domain["sources"],
+                is_ioc=domain["ioc"],
+                verdict=domain["verdict"],
+            )
+            yield artifact
+
+        for email in iocs["emails"]:
+            artifact = EmailArtifact(
+                sender=email.get("sender"),
+                subject=email.get("subject"),
+                recipients=email["recipients"],
+                classifications=email["classifications"],
+                verdict=email["verdict"],
+                is_ioc=email["ioc"],
+            )
+            yield artifact
+
+        for process in iocs["processes"]:
+            artifact = ProcessArtifact(
+                cmd_line=process.get("cmd_line"),
+                is_ioc=process["ioc"],
+                classifications=process["classifications"],
+                verdict=process["verdict"],
+            )
+            yield artifact
+
+    def mitre_attacks(self) -> Iterator[MitreAttack]:
+        mitre_attack_techniques = self.api.get_mitre_attack(self.sample_id)
+        for technique in mitre_attack_techniques:
+            mitre_attack = MitreAttack(
+                description=technique["technique"],
+                id=technique["technique_id"],
+            )
+            yield mitre_attack
 
 
 class VMRayMISPOrg(MISPOrganisation):  # pylint: disable=too-many-ancestors
@@ -990,11 +1095,14 @@ class VMRayParser:
         analysis_results = self.api.get_analyses_by_submission(submission_id)
         return all(a["analysis_billing_type"] == "detector" for a in analysis_results)
 
-    def _set_hash_and_verdict(self, event: MISPEvent, submissions_id: int) -> MISPEvent:
+    def _add_sample_info(
+        self, event: MISPEvent, sb_sig: MISPObject, submissions_id: int
+    ) -> MISPEvent:
         verdict = self._get_sample_verdict(submissions_id)
         submission = self.api.get_submission(submissions_id)
         sample_id = submission["submission_sample_id"]
         sample_info = self.api.get_sample_info(sample_id)
+        is_ioc = False
 
         if verdict:
             is_ioc = verdict in ("malicious", "suspicious")
@@ -1015,6 +1123,30 @@ class VMRayParser:
             is_ioc=is_ioc,
         )
 
+        report = SampleReport(submissions_id, self.api)
+
+        # set sample VTIs
+        if self.misp_config.include_vtis:
+            for vti in report.vtis():
+                vti_text = f"{vti.category}: {vti.operation}"
+                vti_attr = sb_sig.add_attribute("signature", value=vti_text)
+
+                if self.misp_config.use_vmray_tags and vti_attr:
+                    value = self._analysis_score_to_taxonomies(vti.score)
+                    if value:
+                        vti_attr.add_tag(f'vmray:vti_analysis_score="{value}"')
+            if len(sb_sig.attributes) > 1:
+                event.add_object(sb_sig)
+
+        # set sample IOCs
+        for ioc in report.artifacts():
+            ioc_obj = ioc.to_misp_object(self.misp_config.use_vmray_tags)
+            event.add_object(ioc_obj)
+
+        # set sample MITRE ATT&CK
+        for mitre_attack in report.mitre_attacks():
+            event.add_tag(mitre_attack.to_misp_galaxy())
+
         artifact_obj = file_artifact.to_misp_object(self.misp_config.use_vmray_tags)
         event.add_object(artifact_obj)
 
@@ -1022,6 +1154,7 @@ class VMRayParser:
         if self.misp_config.use_vmray_tags and verdict:
             event.add_tag(f'vmray:verdict="{verdict}"')
 
+        self.logger.debug("Added %d objects to event.", len(event.objects))
         return event
 
     def _reports(
@@ -1035,8 +1168,12 @@ class VMRayParser:
 
             analysis_id = analysis["analysis_id"]
             permalink = analysis["analysis_webif_url"]
-
-            self.logger.debug("Getting summary for analysis #%s", analysis_id)
+            locked_report = analysis["analysis_quota_type"] == "verdict"
+            if locked_report:
+                self.logger.debug(
+                    "Skipping download of locked analysis #%s", analysis_id
+                )
+                continue
 
             try:
                 report_parser = SummaryV2(api=self.api, analysis_id=analysis_id)
@@ -1054,6 +1191,7 @@ class VMRayParser:
             if report_parser.is_static_report():
                 continue
 
+            self.logger.debug("Fetched summary for analysis #%s", analysis_id)
             yield report_parser, permalink
 
     def _get_sample_verdict(self, submission_id: int) -> Optional[str]:
@@ -1087,7 +1225,8 @@ class VMRayParser:
 
         reports = list(self._reports(submission_id))
         if self._detector_analyses_only(submission_id) or len(reports) == 0:
-            return self._set_hash_and_verdict(event, submission_id)
+            self.logger.debug("No reports to process. Adding sample information.")
+            return self._add_sample_info(event, sb_sig, submission_id)
 
         for report, permalink in reports:
             try:
@@ -1102,7 +1241,7 @@ class VMRayParser:
             vti_text = f"{vti.category}: {vti.operation}. {vti.technique}"
             vti_attr = sb_sig.add_attribute("signature", value=vti_text)
 
-            if self.misp_config.use_vmray_tags:
+            if self.misp_config.use_vmray_tags and vti_attr:
                 value = self._analysis_score_to_taxonomies(vti.score)
                 if value:
                     vti_attr.add_tag(f'vmray:vti_analysis_score="{value}"')
@@ -1146,7 +1285,7 @@ class VMRayParser:
         score = report.score()
         attr_score = obj.add_attribute("score", score)
 
-        if self.misp_config.use_vmray_tags:
+        if self.misp_config.use_vmray_tags and attr_score:
             attr_score.add_tag(f'vmray:verdict="{score}"')
 
         sandbox_type = report.sandbox_type()

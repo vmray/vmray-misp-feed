@@ -20,8 +20,8 @@ LOG_LEVEL_MAPPING = {
 }
 
 
-def setup_logging(log_level: str):
-    log_level = LOG_LEVEL_MAPPING[log_level]
+def setup_logging(log_level_str: str):
+    log_level = LOG_LEVEL_MAPPING[log_level_str]
     logger = logging.getLogger("vmray_feed")
     logger.setLevel(log_level)
 
@@ -32,7 +32,8 @@ def setup_logging(log_level: str):
     stream_logger.setLevel(log_level)
 
     formatter = logging.Formatter(
-        "%(asctime)s %(filename)8s: %(levelname)8s | %(message)s"
+        fmt="%(asctime)s | %(filename)-12s | %(levelname)-8s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
     )
     file_logger.setFormatter(formatter)
     stream_logger.setFormatter(formatter)
@@ -44,7 +45,7 @@ def setup_logging(log_level: str):
 
 
 class VMRayFeed:
-    """ a local feed for MISP """
+    """a local feed for MISP"""
 
     def __init__(self):
         self.config = load_config()
@@ -57,6 +58,7 @@ class VMRayFeed:
 
     def _save_event(self, event: dict):
         event_uuid = event["Event"]["uuid"]
+        self.logger.debug("Saving new event with UUID %s", event_uuid)
         with (self.feed_path / f"{event_uuid}.json").open(
             "w", encoding="utf-8"
         ) as fobj:
@@ -89,7 +91,7 @@ class VMRayFeed:
             json.dump(manifest, fobj, indent=2)
 
     def update_feed(self):
-        """ update the feed based on the last submission id """
+        """update the feed based on the last submission id"""
 
         manifest = {}
         hashes = []
