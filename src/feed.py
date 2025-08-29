@@ -58,6 +58,7 @@ class VMRayFeed:
 
     def _save_event(self, event: dict):
         event_uuid = event["Event"]["uuid"]
+        self.logger.debug("Saving new event with UUID %s", event_uuid)
         with (self.feed_path / f"{event_uuid}.json").open(
             "w", encoding="utf-8"
         ) as fobj:

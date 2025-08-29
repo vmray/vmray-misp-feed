@@ -244,20 +244,22 @@ class MutexArtifact(Artifact):
         obj = MISPObject(name="mutex")
 
         classifications = classifications_to_str(self.classifications)
-        attr = obj.add_attribute(
-            "name",
-            value=self.name,
-            category="External analysis",
-            to_ids=False,
-            comment=classifications,
-        )
-        if tag and attr:
-            self.tag_artifact_attribute(attr)
+
+        if self.name.strip():
+            attr = obj.add_attribute(
+                "name",
+                value=self.name,
+                category="External analysis",
+                to_ids=False,
+                comment=classifications,
+            )
+            if tag and attr:
+                self.tag_artifact_attribute(attr)
 
         operations = None
         if self.operations:
             operations = "Operations: " + ", ".join(self.operations)
-        obj.add_attribute("description", value=operations, to_ids=False)
+            obj.add_attribute("description", value=operations, to_ids=False)
 
         return obj
 
@@ -306,7 +308,7 @@ class ProcessArtifact(Artifact):
         else:
             name_attr = None
 
-        if self.cmd_line is None or self.cmd_line.strip():
+        if self.cmd_line is not None and self.cmd_line.strip():
             cmd_attr = obj.add_attribute("command-line", value=self.cmd_line)
         else:
             cmd_attr = None
@@ -1173,8 +1175,6 @@ class VMRayParser:
                 )
                 continue
 
-            self.logger.debug("Getting summary for analysis #%s", analysis_id)
-
             try:
                 report_parser = SummaryV2(api=self.api, analysis_id=analysis_id)
             except VMRayRESTAPIError:
@@ -1191,6 +1191,7 @@ class VMRayParser:
             if report_parser.is_static_report():
                 continue
 
+            self.logger.debug("Fetched summary for analysis #%s", analysis_id)
             yield report_parser, permalink
 
     def _get_sample_verdict(self, submission_id: int) -> Optional[str]:

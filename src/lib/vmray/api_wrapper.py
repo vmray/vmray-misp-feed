@@ -103,21 +103,12 @@ class VMRay(VMRayRESTAPI):
 
     def get_vtis(self, sample_id: int) -> List[dict]:
         vti_data = self.call("GET", f"/rest/sample/{sample_id}/vtis")
-        try:
-            return vti_data["threat_indicators"]
-        except KeyError:
-            return []
+        return vti_data.get("threat_indicators", [])
 
     def get_iocs(self, sample_id: int) -> dict:
         ioc_data = self.call("GET", f"/rest/sample/{sample_id}/iocs")
-        try:
-            return ioc_data["iocs"]
-        except KeyError:
-            return {}
+        return ioc_data.get("iocs", {})
 
     def get_mitre_attack(self, sample_id: int) -> List[dict]:
         mitre_attack_data = self.call("GET", f"/rest/sample/{sample_id}/mitre_attack")
-        try:
-            return mitre_attack_data["mitre_attack_techniques"]
-        except KeyError:
-            return []
+        return mitre_attack_data.get("mitre_attack_techniques", [])
